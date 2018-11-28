@@ -57,28 +57,18 @@ default: run
 
 run:
 	@echo
-	@echo "-- Verilator tracing example"
-
-	@echo
 	@echo "-- VERILATE ----------------"
 	$(VERILATOR) $(VERILATOR_FLAGS) -f input.vc top.v sim_main.cpp
-
 	@echo
 	@echo "-- COMPILE -----------------"
-# To compile, we can either just do what Verilator asks,
-# or call a submakefile where we can override the rules ourselves
 	$(MAKE) -j 4 -C obj_dir -f Vtop.mk
-#	$(MAKE) -j 4 -C obj_dir -f ../Makefile_obj
-
 	@echo
 	@echo "-- RUN ---------------------"
 	@mkdir -p logs
 	obj_dir/Vtop +trace
-
 	@echo
 	@echo "-- COVERAGE ----------------"
 	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
-
 	@echo
 	@echo "-- DONE --------------------"
 	@echo "To see waveforms, open vlt_dump.vcd in a waveform viewer"
